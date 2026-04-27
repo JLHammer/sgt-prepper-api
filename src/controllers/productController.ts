@@ -1,12 +1,12 @@
-import { Request, Response } from 'express';
-import { prisma } from '../prisma.js';
+import { Request, Response } from "express";
+import { prisma } from "../prisma.js";
 
 export const getRecords = async (req: Request, res: Response) => {
   const { category } = req.params;
   try {
     const data = await prisma.product.findMany({
       where: {
-        isActive: true
+        isActive: true,
       },
       select: {
         name: true,
@@ -15,12 +15,13 @@ export const getRecords = async (req: Request, res: Response) => {
         teaser: true,
         imageUrl: true,
         stock: true,
-      }
+        createdAt: true,
+      },
     });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch products' });
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 };
 
@@ -39,15 +40,14 @@ export const getRecordsByCategory = async (req: Request, res: Response) => {
         teaser: true,
         imageUrl: true,
         stock: true,
-      }
+      },
     });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch products' });
+    res.status(500).json({ error: "Failed to fetch products" });
   }
 };
-
 
 export const getRecord = async (req: Request, res: Response) => {
   const { slug } = req.params;
@@ -56,13 +56,13 @@ export const getRecord = async (req: Request, res: Response) => {
       where: { slug: slug },
       include: {
         brand: {},
-        category: {}
-      }
+        category: {},
+      },
     });
-    if (!data) res.status(404).json({ error: 'Product not found' });
+    if (!data) res.status(404).json({ error: "Product not found" });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to fetch product' });
+    res.status(500).json({ error: "Failed to fetch product" });
   }
 };
