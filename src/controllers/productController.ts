@@ -16,6 +16,9 @@ export const getRecords = async (req: Request, res: Response) => {
         imageUrl: true,
         stock: true,
         createdAt: true,
+        category: {
+          select: { slug: true },
+        },
       },
     });
     res.json(data);
@@ -40,6 +43,9 @@ export const getRecordsByCategory = async (req: Request, res: Response) => {
         teaser: true,
         imageUrl: true,
         stock: true,
+        category: {
+          select: { slug: true },
+        },
       },
     });
     res.json(data);
